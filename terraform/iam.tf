@@ -35,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "exec_policy" {
 }
 
 resource "aws_iam_role" "codedeploy_role" {
-  name = "strapi-codedeploy-role"
+  name = "vaishnavi-strapi-codedeploy-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

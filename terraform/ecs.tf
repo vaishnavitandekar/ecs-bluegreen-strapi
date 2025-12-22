@@ -164,7 +164,7 @@ resource "aws_codedeploy_deployment_group" "ecs" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs" {
-  name              = "/ecs/strapi-vaishnavi"
+  name              = "/ecs/strapi-vaishnavii"
   retention_in_days = 7
 
   lifecycle {
@@ -174,11 +174,11 @@ resource "aws_cloudwatch_log_group" "ecs" {
 }
 
 resource "aws_sns_topic" "ecs_alerts" {
-  name = "strapi-ecs-alerts-vaishnavi"
+  name = "strapi-ecs-alerts-vaishnavii"
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_high_cpu" {
-  alarm_name          = "strapi-high-cpu-vaishnavi"
+  alarm_name          = "strapi-high-cpu-vaishnavii"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 80
 
@@ -200,7 +200,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_high_cpu" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_high_memory" {
-  alarm_name          = "strapi-high-memory-vaishnavi"
+  alarm_name          = "strapi-high-memory-vaishnavii"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 80
 
@@ -222,7 +222,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_high_memory" {
 }
 
 resource "aws_cloudwatch_dashboard" "ecs_dashboard" {
-  dashboard_name = "vaishnavi-strapi-ecs-dashboard"
+  dashboard_name = "vaishnavii-strapi-ecs-dashboard"
 
   dashboard_body = jsonencode({
     widgets = [
