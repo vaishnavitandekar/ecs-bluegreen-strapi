@@ -43,4 +43,5 @@ variable "jwt_secret" {
 
 variable "deploy_version" {
   type = string
+  default = "bootstrap"
 }
