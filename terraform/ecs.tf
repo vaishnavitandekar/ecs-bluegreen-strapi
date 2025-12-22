@@ -82,7 +82,8 @@ resource "aws_ecs_service" "service" {
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 2
 
-  platform_version = "1.4.0" 
+  launch_type     = "FARGATE"        
+  platform_version = "LATEST"
 
   deployment_controller {
     type = "CODE_DEPLOY"
@@ -164,7 +165,7 @@ resource "aws_codedeploy_deployment_group" "ecs" {
 }
 
 resource "aws_cloudwatch_log_group" "ecs" {
-  name              = "/ecs/strapi-vaishnavii"
+  name              = "/ecs/strapi-vaishnavi"
   retention_in_days = 7
 
   lifecycle {
