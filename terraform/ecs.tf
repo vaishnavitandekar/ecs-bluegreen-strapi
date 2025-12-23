@@ -95,11 +95,6 @@ resource "aws_ecs_service" "service" {
     container_port   = 1337
   }
 
-  deployment_circuit_breaker {
-    enable   = true
-    rollback = true
-  }
-
   network_configuration {
     subnets          = data.aws_subnets.public.ids
     security_groups  = [aws_security_group.ecs_sg.id]
