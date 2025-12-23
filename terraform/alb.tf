@@ -1,5 +1,5 @@
 resource "aws_lb" "strapi_alb" {
-  name               = "vaishnavi-strapi-alb"
+  name               = "vaishnavi-strapii-alb"
   load_balancer_type = "application"
   internal           = false
 
@@ -12,7 +12,7 @@ resource "aws_lb" "strapi_alb" {
 }
 
 resource "aws_lb_target_group" "blue" {
-  name        = "vaishnavi-strapi-blue-tg"
+  name        = "vaishnavi-strapii-blue-tg"
   port        = 1337
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.default.id
@@ -29,7 +29,7 @@ resource "aws_lb_target_group" "blue" {
 }
 
 resource "aws_lb_target_group" "green" {
-  name        = "vaishnavi-strapi-green-tg"
+  name        = "vaishnavi-strapii-green-tg"
   port        = 1337
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.default.id
