@@ -110,13 +110,13 @@ resource "aws_ecs_service" "service" {
 
 
 resource "aws_codedeploy_app" "ecs" {
-  name             = "vaishnavi-strapi-codedeploy-app"
+  name             = "vaishnavii-strapi-codedeploy-app"
   compute_platform = "ECS"
 }
 
 resource "aws_codedeploy_deployment_group" "ecs" {
   app_name              = aws_codedeploy_app.ecs.name
-  deployment_group_name = "vaishnavi-strapi-deployment-group"
+  deployment_group_name = "vaishnavii-strapi-deployment-group"
   service_role_arn      = aws_iam_role.codedeploy_role.arn
 
   deployment_config_name = "CodeDeployDefault.ECSCanary10Percent5Minutes"
@@ -170,11 +170,11 @@ resource "aws_cloudwatch_log_group" "ecs" {
 }
 
 resource "aws_sns_topic" "ecs_alerts" {
-  name = "strapi-ecs-alerts-vaishnavii"
+  name = "strapi-ecs-alerts-vaishnavi"
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_high_cpu" {
-  alarm_name          = "strapi-high-cpu-vaishnavii"
+  alarm_name          = "strapi-high-cpu-vaishnavi"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 80
 
@@ -196,7 +196,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_high_cpu" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_high_memory" {
-  alarm_name          = "strapi-high-memory-vaishnavii"
+  alarm_name          = "strapi-high-memory-vaishnavi"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 80
 
@@ -218,7 +218,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_high_memory" {
 }
 
 resource "aws_cloudwatch_dashboard" "ecs_dashboard" {
-  dashboard_name = "vaishnavii-strapi-ecs-dashboard"
+  dashboard_name = "vaishnavi-strapi-ecs-dashboard"
 
   dashboard_body = jsonencode({
     widgets = [

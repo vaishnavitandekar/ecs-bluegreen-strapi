@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb_sg" {
-  name   = "vaishnavi-strapi-alb-sg"
+  name   = "vaishnavii-strapi-alb-sg"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -25,7 +25,7 @@ resource "aws_security_group" "alb_sg" {
 }
 
 resource "aws_security_group" "ecs_sg" {
-  name   = "vaishnavi-strapi-ecs-sg"
+  name   = "vaishnavii-strapi-ecs-sg"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -44,7 +44,7 @@ resource "aws_security_group" "ecs_sg" {
 }
 
 resource "aws_security_group" "rds_sg" {
-  name   = "vaishnavi-strapi-rds-sg"
+  name   = "vaishnavii-strapi-rds-sg"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
