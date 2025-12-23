@@ -117,11 +117,6 @@ resource "aws_codedeploy_app" "ecs" {
   compute_platform = "ECS"
 }
 
-resource "aws_codedeploy_app" "ecs" {
-  name             = "vaishnavi-strapi-codedeploy-app"
-  compute_platform = "ECS"
-}
-
 resource "aws_codedeploy_deployment_group" "ecs" {
   app_name              = aws_codedeploy_app.ecs.name
   deployment_group_name = "vaishnavi-strapi-deployment-group"
