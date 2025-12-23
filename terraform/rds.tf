@@ -1,11 +1,7 @@
 resource "aws_db_subnet_group" "default" {
   name = "vaishnavii-strapi-db-subnet"
 
-  subnet_ids = [
-    data.aws_subnets.public.ids[0],
-    data.aws_subnets.public.ids[1]
-  ]
-
+  subnet_ids = slice(data.aws_subnets.public.ids, 0, 2) 
 }
 
 resource "aws_db_instance" "postgres" {
