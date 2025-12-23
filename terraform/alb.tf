@@ -3,7 +3,10 @@ resource "aws_lb" "strapi_alb" {
   load_balancer_type = "application"
   internal           = false
 
-  subnets = slice(data.aws_subnets.public.ids, 0, 2)
+  subnets = [
+    aws_subnet.public_a.id,
+    aws_subnet.public_b.id
+  ]
 
   security_groups = [aws_security_group.alb_sg.id]
 }
