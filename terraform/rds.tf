@@ -2,18 +2,18 @@ resource "aws_db_subnet_group" "default" {
   name = "vaishnavii-strapi-db-subnet"
 
   subnet_ids = [
-    data.aws_subnet.public_a.id,
-    data.aws_subnet.public_b.id
+    data.aws_subnets.public.ids[0],
+    data.aws_subnets.public.ids[1]
   ]
+
 }
 
-
 resource "aws_db_instance" "postgres" {
-  identifier             = "vaishnavi-strapi-postgres"
-  engine                 = "postgres"
-  engine_version         = "15"
-  instance_class         = "db.t3.micro"
-  allocated_storage      = 20
+  identifier        = "vaishnavi-strapi-postgres"
+  engine            = "postgres"
+  engine_version    = "15"
+  instance_class    = "db.t3.micro"
+  allocated_storage = 20
 
   db_name  = "strapi"
   username = var.db_username

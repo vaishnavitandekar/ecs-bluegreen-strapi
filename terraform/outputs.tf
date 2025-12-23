@@ -18,3 +18,6 @@ output "strapi_url" {
   value = "http://${aws_lb.strapi_alb.dns_name}"
 }
 
+output "public_subnet_ids" {
+  value = data.aws_subnets.public.ids
+}

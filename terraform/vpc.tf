@@ -2,16 +2,15 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnet" "public_a" {
+data "aws_subnets" "public" {
   filter {
-    name   = "tag:Name"
-    values = ["public-a"]
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+
+  filter {
+    name   = "tag:Tier"
+    values = ["public"]
   }
 }
 
-data "aws_subnet" "public_b" {
-  filter {
-    name   = "tag:Name"
-    values = ["public-b"]
-  }
-}

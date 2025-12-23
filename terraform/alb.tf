@@ -4,9 +4,10 @@ resource "aws_lb" "strapi_alb" {
   internal           = false
 
   subnets = [
-    data.aws_subnet.public_a.id,
-    data.aws_subnet.public_b.id
+    data.aws_subnets.public.ids[0],
+    data.aws_subnets.public.ids[1]
   ]
+
 
   security_groups = [aws_security_group.alb_sg.id]
 }
