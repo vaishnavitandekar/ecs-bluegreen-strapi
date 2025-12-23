@@ -32,6 +32,7 @@ resource "aws_ecs_task_definition" "task" {
 
       portMappings = [{
         containerPort = 1337
+        protocol      = "tcp"
       }]
 
       logConfiguration = {
@@ -82,7 +83,7 @@ resource "aws_ecs_service" "service" {
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 2
 
-  launch_type     = "FARGATE"        
+  launch_type      = "FARGATE"
   platform_version = "LATEST"
 
   deployment_controller {
@@ -96,7 +97,10 @@ resource "aws_ecs_service" "service" {
   }
 
   network_configuration {
-    subnets          = data.aws_subnets.public.ids
+    subnets = [
+      data.aws_subnet.public_a.id,
+      data.aws_subnet.public_b.id
+    ]
     security_groups  = [aws_security_group.ecs_sg.id]
     assign_public_ip = true
   }
@@ -108,15 +112,19 @@ resource "aws_ecs_service" "service" {
   ]
 }
 
+resource "aws_codedeploy_app" "ecs" {
+  name             = "vaishnavi-strapi-codedeploy-app"
+  compute_platform = "ECS"
+}
 
 resource "aws_codedeploy_app" "ecs" {
-  name             = "vaishnavii-strapi-codedeploy-app"
+  name             = "vaishnavi-strapi-codedeploy-app"
   compute_platform = "ECS"
 }
 
 resource "aws_codedeploy_deployment_group" "ecs" {
   app_name              = aws_codedeploy_app.ecs.name
-  deployment_group_name = "vaishnavii-strapi-deployment-group"
+  deployment_group_name = "vaishnavi-strapi-deployment-group"
   service_role_arn      = aws_iam_role.codedeploy_role.arn
 
   deployment_config_name = "CodeDeployDefault.ECSCanary10Percent5Minutes"
@@ -131,7 +139,6 @@ resource "aws_codedeploy_deployment_group" "ecs" {
       action                           = "TERMINATE"
       termination_wait_time_in_minutes = 5
     }
-
     deployment_ready_option {
       action_on_timeout = "CONTINUE_DEPLOYMENT"
     }
@@ -174,7 +181,7 @@ resource "aws_sns_topic" "ecs_alerts" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_high_cpu" {
-  alarm_name          = "strapi-high-cpu-vaishnavi"
+  alarm_name          = "strapi-high-cpu-vaishnaviii"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 80
 
@@ -196,7 +203,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_high_cpu" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_high_memory" {
-  alarm_name          = "strapi-high-memory-vaishnavi"
+  alarm_name          = "strapi-high-memory-vaishnaviii"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 80
 
@@ -218,7 +225,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_high_memory" {
 }
 
 resource "aws_cloudwatch_dashboard" "ecs_dashboard" {
-  dashboard_name = "vaishnavi-strapi-ecs-dashboard"
+  dashboard_name = "vaishnaviii-strapi-ecs-dashboard"
 
   dashboard_body = jsonencode({
     widgets = [

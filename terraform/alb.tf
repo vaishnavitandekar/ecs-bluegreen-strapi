@@ -2,8 +2,13 @@ resource "aws_lb" "strapi_alb" {
   name               = "vaishnavi-strapi-alb"
   load_balancer_type = "application"
   internal           = false
-  subnets            = data.aws_subnets.public.ids
-  security_groups    = [aws_security_group.alb_sg.id]
+
+  subnets = [
+    data.aws_subnet.public_a.id,
+    data.aws_subnet.public_b.id
+  ]
+
+  security_groups = [aws_security_group.alb_sg.id]
 }
 
 resource "aws_lb_target_group" "blue" {
@@ -13,7 +18,7 @@ resource "aws_lb_target_group" "blue" {
   vpc_id      = data.aws_vpc.default.id
   target_type = "ip"
 
-health_check {
+  health_check {
     path                = "/_health"
     healthy_threshold   = 2
     unhealthy_threshold = 3
@@ -30,7 +35,7 @@ resource "aws_lb_target_group" "green" {
   vpc_id      = data.aws_vpc.default.id
   target_type = "ip"
 
-health_check {
+  health_check {
     path                = "/_health"
     healthy_threshold   = 2
     unhealthy_threshold = 3
@@ -46,7 +51,18 @@ resource "aws_lb_listener" "http" {
   protocol          = "HTTP"
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.blue.arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.blue.arn
+        weight = 100
+      }
+
+      target_group {
+        arn    = aws_lb_target_group.green.arn
+        weight = 0
+      }
+    }
   }
 }
