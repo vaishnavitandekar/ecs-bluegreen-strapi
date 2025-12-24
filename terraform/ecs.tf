@@ -88,7 +88,7 @@ resource "aws_ecs_service" "service" {
   name            = "strapi-service-vaishnavi"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.task.arn
-  desired_count   = 1
+  desired_count   = 2
 
   launch_type      = "FARGATE"
   platform_version = "LATEST"
@@ -134,6 +134,7 @@ resource "aws_codedeploy_deployment_group" "ecs" {
   service_role_arn      = aws_iam_role.codedeploy_role.arn
 
   deployment_config_name = "CodeDeployDefault.ECSCanary10Percent5Minutes"
+
   deployment_style {
     deployment_type   = "BLUE_GREEN"
     deployment_option = "WITH_TRAFFIC_CONTROL"
@@ -149,11 +150,6 @@ resource "aws_codedeploy_deployment_group" "ecs" {
       action                           = "TERMINATE"
       termination_wait_time_in_minutes = 5
     }
-    deployment_ready_option {
-      action_on_timeout    = "CONTINUE_DEPLOYMENT"
-      wait_time_in_minutes = 5
-    }
-
   }
 
   ecs_service {
@@ -177,6 +173,7 @@ resource "aws_codedeploy_deployment_group" "ecs" {
     }
   }
 }
+
 
 resource "aws_cloudwatch_log_group" "ecs" {
   name              = "/ecs/strapi-vaishnavi"
