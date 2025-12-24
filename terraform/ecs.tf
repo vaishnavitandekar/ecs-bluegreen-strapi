@@ -150,6 +150,9 @@ resource "aws_codedeploy_deployment_group" "ecs" {
       action                           = "TERMINATE"
       termination_wait_time_in_minutes = 5
     }
+    deployment_ready_option {
+      action_on_timeout = "CONTINUE_DEPLOYMENT"
+    }
   }
 
   ecs_service {
