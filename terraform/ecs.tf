@@ -96,11 +96,8 @@ resource "aws_ecs_service" "service" {
     container_port   = 1337
   }
 
-  network_configuration {
-    subnets = [
-      aws_subnet.private_a.id,
-      aws_subnet.private_b.id
-    ]
+   network_configuration {
+    subnets          = data.aws_subnets.default.ids
     security_groups  = [aws_security_group.ecs_sg.id]
     assign_public_ip = false
   }
