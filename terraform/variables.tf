@@ -8,7 +8,7 @@ variable "db_password" {
 }
 
 variable "aws_region" {
-  default = "ap-south-1"
+  default = "us-east-1"
 }
 
 variable "app_keys" {
