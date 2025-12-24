@@ -38,14 +38,14 @@ jobs:
       - name: Terraform Init
         working-directory: terraform
         run: terraform init
+        
+      - name: Terraform Validate
+        working-directory: terraform
+        run: terraform validate
 
       - name: Terraform Plan
         working-directory: terraform
         run: terraform plan
-
-      - name: Terraform Validate
-        working-directory: terraform
-        run: terraform validate
 
       - name: Terraform Apply (ECR bootstrap)
         working-directory: terraform
@@ -70,3 +70,4 @@ jobs:
         working-directory: terraform
         run: |
           terraform apply -auto-approve -var="deploy_version=${GITHUB_SHA}"
+

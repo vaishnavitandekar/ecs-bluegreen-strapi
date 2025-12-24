@@ -1,6 +1,10 @@
-resource "aws_db_subnet_group" "default" {
-  name       = "vaishnavi-strapi-db-subnet"
-  subnet_ids = data.aws_subnets.default.ids
+resource "aws_db_subnet_group" "rds" {
+  name = "strapi-db-subnet-group"
+
+  subnet_ids = [
+    aws_subnet.private_a.id,
+    aws_subnet.private_b.id
+  ]
 }
 
 resource "aws_db_instance" "postgres" {
@@ -14,6 +18,6 @@ resource "aws_db_instance" "postgres" {
   password               = var.db_password
   publicly_accessible    = false
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  db_subnet_group_name   = aws_db_subnet_group.default.name
+  db_subnet_group_name   = aws_db_subnet_group.rds.name
   skip_final_snapshot    = true
 }

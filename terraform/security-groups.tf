@@ -1,6 +1,7 @@
 resource "aws_security_group" "alb_sg" {
   name   = "vaishnavi-strapi-alb-sg"
-  vpc_id = data.aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
+
 
   ingress {
     from_port   = 80
@@ -19,7 +20,8 @@ resource "aws_security_group" "alb_sg" {
 
 resource "aws_security_group" "ecs_sg" {
   name   = "vaishnavi-strapi-ecs-sg"
-  vpc_id = data.aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
+
 
   ingress {
     from_port       = 1337
@@ -38,7 +40,8 @@ resource "aws_security_group" "ecs_sg" {
 
 resource "aws_security_group" "rds_sg" {
   name   = "vaishnavi-strapi-rds-sg"
-  vpc_id = data.aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
+
 
   ingress {
     from_port       = 5432

@@ -2,19 +2,25 @@ resource "aws_lb" "strapi_alb" {
   name               = "vaishnavi-strapi-alb"
   load_balancer_type = "application"
   internal           = false
-  subnets            = data.aws_subnets.default.ids
-  security_groups    = [aws_security_group.alb_sg.id]
+
+  subnets = [
+    aws_subnet.public_a.id,
+    aws_subnet.public_b.id
+  ]
+
+  security_groups = [aws_security_group.alb_sg.id]
 }
 
 resource "aws_lb_target_group" "blue" {
-  name        = "vaishnavi-strapi-blue-tg"
-  port        = 1337
-  protocol    = "HTTP"
-  vpc_id      = data.aws_vpc.main.id
+  name     = "vaishnavi-strapi-blue-tg"
+  port     = 1337
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.main.id
+
   target_type = "ip"
 
-   health_check {
-    path                = "/_health"
+  health_check {
+    path                = "/"
     healthy_threshold   = 2
     unhealthy_threshold = 3
     timeout             = 5
@@ -27,11 +33,11 @@ resource "aws_lb_target_group" "green" {
   name        = "vaishnavi-strapi-green-tg"
   port        = 1337
   protocol    = "HTTP"
-  vpc_id      = data.aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   target_type = "ip"
 
-   health_check {
-    path                = "/_health"
+  health_check {
+    path                = "/"
     healthy_threshold   = 2
     unhealthy_threshold = 3
     timeout             = 5

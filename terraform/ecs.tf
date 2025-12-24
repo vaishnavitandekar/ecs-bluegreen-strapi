@@ -10,10 +10,17 @@ resource "aws_ecs_cluster" "this" {
     value = "enabled"
   }
 
+  configuration {
+    execute_command_configuration {
+      logging = "DEFAULT"
+    }
+  }
+
   tags = {
     Name = "strapi-cluster-vaishnavii"
   }
 }
+
 
 resource "aws_ecs_task_definition" "task" {
   family                   = "strapi"
@@ -28,7 +35,7 @@ resource "aws_ecs_task_definition" "task" {
     {
       name      = "vaishnavi-strapi"
       essential = true
-      image     = "${aws_ecr_repository.this.repository_url}:latest"
+      image = "${aws_ecr_repository.this.repository_url}:${var.deploy_version}"
 
       portMappings = [{
         containerPort = 1337
@@ -81,7 +88,7 @@ resource "aws_ecs_service" "service" {
   name            = "strapi-service-vaishnavi"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.task.arn
-  desired_count   = 2
+  desired_count   = 1
 
   launch_type      = "FARGATE"
   platform_version = "LATEST"
@@ -96,10 +103,17 @@ resource "aws_ecs_service" "service" {
     container_port   = 1337
   }
 
-   network_configuration {
-    subnets          = data.aws_subnets.default.ids
+  network_configuration {
+    subnets = [
+      aws_subnet.private_a.id,
+      aws_subnet.private_b.id
+    ]
+
     security_groups  = [aws_security_group.ecs_sg.id]
     assign_public_ip = false
+  }
+  lifecycle {
+    ignore_changes = [task_definition]
   }
 
   depends_on = [
@@ -121,9 +135,9 @@ resource "aws_codedeploy_deployment_group" "ecs" {
 
   deployment_config_name = "CodeDeployDefault.ECSCanary10Percent5Minutes"
   deployment_style {
-  deployment_type   = "BLUE_GREEN"
-  deployment_option = "WITH_TRAFFIC_CONTROL"
-}
+    deployment_type   = "BLUE_GREEN"
+    deployment_option = "WITH_TRAFFIC_CONTROL"
+  }
 
   auto_rollback_configuration {
     enabled = true
@@ -136,8 +150,10 @@ resource "aws_codedeploy_deployment_group" "ecs" {
       termination_wait_time_in_minutes = 5
     }
     deployment_ready_option {
-      action_on_timeout = "CONTINUE_DEPLOYMENT"
+      action_on_timeout    = "CONTINUE_DEPLOYMENT"
+      wait_time_in_minutes = 5
     }
+
   }
 
   ecs_service {
