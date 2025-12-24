@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "task" {
 
   container_definitions = jsonencode([
     {
-      name      = "vaishnavi-strapii"
+      name      = "vaishnavi-strapi"
       essential = true
       image     = "${aws_ecr_repository.this.repository_url}:latest"
 
@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "task" {
         { name = "DATABASE_USERNAME", value = "strapi" },
         { name = "DATABASE_PASSWORD", value = var.db_password },
 
-        { name = "DATABASE_SSL", value = "true" },
+        { name = "DATABASE_SSL", value = "false" },
         { name = "DATABASE_SSL_REJECT_UNAUTHORIZED", value = "false" },
 
         { name = "APP_KEYS", value = var.app_keys },
@@ -78,7 +78,7 @@ resource "aws_ecs_task_definition" "task" {
 }
 
 resource "aws_ecs_service" "service" {
-  name            = "strapi-service-vaishnavii"
+  name            = "strapi-service-vaishnavi"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.task.arn
   desired_count   = 2
@@ -92,17 +92,17 @@ resource "aws_ecs_service" "service" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.blue.arn
-    container_name   = "vaishnavi-strapii"
+    container_name   = "vaishnavi-strapi"
     container_port   = 1337
   }
 
   network_configuration {
     subnets = [
-      aws_subnet.public_a.id,
-      aws_subnet.public_b.id
+      aws_subnet.private_a.id,
+      aws_subnet.private_b.id
     ]
     security_groups  = [aws_security_group.ecs_sg.id]
-    assign_public_ip = true
+    assign_public_ip = false
   }
 
   depends_on = [
