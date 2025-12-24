@@ -120,6 +120,10 @@ resource "aws_codedeploy_deployment_group" "ecs" {
   service_role_arn      = aws_iam_role.codedeploy_role.arn
 
   deployment_config_name = "CodeDeployDefault.ECSCanary10Percent5Minutes"
+  deployment_style {
+  deployment_type   = "BLUE_GREEN"
+  deployment_option = "WITH_TRAFFIC_CONTROL"
+}
 
   auto_rollback_configuration {
     enabled = true
