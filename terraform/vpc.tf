@@ -1,42 +1,36 @@
-data "aws_vpc" "default" {
-  default = true
+resource "aws_vpc" "main" {
+  cidr_block           = "10.1.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+  tags = { Name = "vaishnavi-strapi-vpc" }
 }
 
 resource "aws_subnet" "public_a" {
-  vpc_id            = data.aws_vpc.default.id
-  cidr_block        = "10.0.1.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.1.1.0/24"
   availability_zone = "ap-south-1a"
   map_public_ip_on_launch = true
-  tags = {
-    Name = "public-a"
-  }
+  tags = { Name = "vaishnavi-public-a" }
 }
 
 resource "aws_subnet" "public_b" {
-  vpc_id            = data.aws_vpc.default.id
-  cidr_block        = "10.0.2.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.1.2.0/24"
   availability_zone = "ap-south-1b"
   map_public_ip_on_launch = true
-  tags = {
-    Name = "public-b"
-  }
+  tags = { Name = "vaishnavi-public-b" }
 }
 
 resource "aws_subnet" "private_a" {
-  vpc_id            = data.aws_vpc.default.id
-  cidr_block        = "10.0.11.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.1.11.0/24"
   availability_zone = "ap-south-1a"
-  tags = {
-    Name = "private-a"
-  }
+  tags = { Name = "vaishnavi-private-a" }
 }
 
 resource "aws_subnet" "private_b" {
-  vpc_id            = data.aws_vpc.default.id
-  cidr_block        = "10.0.12.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.1.12.0/24"
   availability_zone = "ap-south-1b"
-  tags = {
-    Name = "private-b"
-  }
+  tags = { Name = "vaishnavi-private-b" }
 }
-
