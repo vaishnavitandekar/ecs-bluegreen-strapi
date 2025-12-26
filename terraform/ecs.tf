@@ -35,7 +35,7 @@ resource "aws_ecs_task_definition" "task" {
     {
       name      = "vaishnavi-strapi"
       essential = true
-      image = "${aws_ecr_repository.this.repository_url}:${var.deploy_version}"
+      image     = "${aws_ecr_repository.this.repository_url}:${var.deploy_version}"
 
       portMappings = [{
         containerPort = 1337
@@ -63,7 +63,7 @@ resource "aws_ecs_task_definition" "task" {
         { name = "DATABASE_USERNAME", value = "strapi" },
         { name = "DATABASE_PASSWORD", value = var.db_password },
 
-        { name = "DATABASE_SSL", value = "false" },
+        { name = "DATABASE_SSL", value = "true" },
         { name = "DATABASE_SSL_REJECT_UNAUTHORIZED", value = "false" },
 
         { name = "APP_KEYS", value = var.app_keys },
